@@ -5,8 +5,10 @@ export default function HomeScreen() {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>BCSP Program</Text>
-        <Text style={styles.subtitle}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
       </View>
+
+      <Image source={require('../../assets/images/BCSP_Logo-2.png')} style={styles.logo} />
+
 
       <View style={styles.cardContainer}>
         {features.map((feature, index) => (
@@ -14,7 +16,7 @@ export default function HomeScreen() {
             <Text style={styles.cardTitle}>{feature.title}</Text>
             <Text style={styles.cardText}>{feature.description}</Text>
           </View>
-        ))}
+        ))}``
       </View>
 
       <View style={styles.buttonContainer}>
@@ -30,15 +32,16 @@ export default function HomeScreen() {
 }
 
 const features = [
-  { title: 'item 1', description: 'Text' },
-  { title: 'item 2', description: 'Text' },
-  { title: 'item 3', description: 'Text' },
+  { title: 'Item 1', description: 'Text' },
+  { title: 'Item 2', description: 'Text' },
+  { title: 'Item 3', description: 'Text' },
+  { title: 'Item 4', description: 'Text' },
 ];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F172A',
+    backgroundColor: '#5DD0FF',
     padding: 20,
   },
   header: {
@@ -47,16 +50,16 @@ const styles = StyleSheet.create({
     marginTop: 40, 
   },
   title: {
-    color: '#FFA500',
-    fontSize: 28,
+    color: '#FF8E00',
+    fontSize: 50,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 30,
   },
-  subtitle: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    marginTop: 8,
-    fontSize: 16,
+  logo: {
+    width: 175,
+    height: 175,
+    alignSelf: 'center',
+    marginVertical: 20,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -65,21 +68,21 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   card: {
-    backgroundColor: '#1E3A8A',
+    backgroundColor: '#036CFB',
     padding: 16,
     margin: 8,
     borderRadius: 10,
     width: 160,
   },
   cardTitle: {
-    color: '#FFA500',
+    color: '#FF8E00',
     fontWeight: 'bold',
     marginBottom: 4,
-    fontSize: 16,
+    fontSize: 20,
   },
   cardText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 15,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -87,14 +90,14 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   buttonPrimary: {
-    backgroundColor: '#FFA500',
+    backgroundColor: '#FF8E00',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     marginHorizontal: 10,
   },
   buttonSecondary: {
-    backgroundColor: '#1E3A8A',
+    backgroundColor: '#045BC1',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
