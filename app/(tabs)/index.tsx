@@ -1,14 +1,37 @@
 import { Image, StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Calendar } from 'react-native-calendars';
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.scrollWrapper} contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>BCSP Program</Text>
       </View>
 
       <Image source={require('../../assets/images/BCSP_Logo-2.png')} style={styles.logo} />
 
+      <View style={styles.calendarContainer}>
+        <Calendar
+          style={styles.calendar}
+          theme={{
+            backgroundColor: '#5DD0FF',
+            calendarBackground: '#5DD0FF',
+            textSectionTitleColor: '#FF8E00',
+            selectedDayBackgroundColor: '#036CFB',
+            selectedDayTextColor: '#FFFFFF',
+            todayTextColor: '#FF8E00',
+            dayTextColor: '#000000',
+            arrowColor: '#FF8E00',
+            monthTextColor: '#FF8E00',
+            textDayFontWeight: 'bold',
+            textMonthFontWeight: 'bold',
+            textDayHeaderFontWeight: 'bold',
+            textDayFontSize: 16,
+            textMonthFontSize: 18,
+            textDayHeaderFontSize: 14,
+          }}
+        />
+      </View>
 
       <View style={styles.cardContainer}>
         {features.map((feature, index) => (
@@ -16,7 +39,7 @@ export default function HomeScreen() {
             <Text style={styles.cardTitle}>{feature.title}</Text>
             <Text style={styles.cardText}>{feature.description}</Text>
           </View>
-        ))}``
+        ))}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -39,15 +62,18 @@ const features = [
 ];
 
 const styles = StyleSheet.create({
-  container: {
+  scrollWrapper: {
     flex: 1,
+  },
+  container: {
     backgroundColor: '#5DD0FF',
     padding: 20,
+    paddingBottom: 40,
   },
   header: {
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 40, 
+    marginTop: 40,
   },
   title: {
     color: '#FF8E00',
@@ -60,6 +86,13 @@ const styles = StyleSheet.create({
     height: 175,
     alignSelf: 'center',
     marginVertical: 20,
+  },
+  calendarContainer: {
+    marginVertical: 20,
+  },
+  calendar: {
+    borderRadius: 10,
+    padding: 10,
   },
   cardContainer: {
     flexDirection: 'row',
