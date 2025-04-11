@@ -1,26 +1,84 @@
-import { Image, StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 export default function HomeScreen() {
+  const [selectedDate, setSelectedDate] = useState<string>('');
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const events: { [key: string]: string } = {
+    '2025-04-10': 'Example Event 1',
+    '2025-04-15': 'Example Event 2',
+  };
+
+  const handleDayPress = (day: any) => {
+    setSelectedDate(day.dateString);
+  };
+
+  const getMarkedDates = () => {
+    const markedDates: { [key: string]: any } = {};
+
+    Object.keys(events).forEach(date => {
+      markedDates[date] = {
+        marked: true,
+        dotColor: '#FF8E00',
+        selected: selectedDate === date,
+        selectedColor: '#036CFB',
+        selectedTextColor: '#FFFFFF',
+      };
+    });
+
+    if (selectedDate && !events[selectedDate]) {
+      markedDates[selectedDate] = {
+        selected: true,
+        selectedColor: '#036CFB',
+        selectedTextColor: '#FFFFFF',
+      };
+    }
+
+    if (!markedDates[today]) markedDates[today] = {};
+
+    markedDates[today] = {
+      ...markedDates[today],
+      customStyles: {
+        container: {
+          backgroundColor: '#FF8E00',
+          borderRadius: 50,
+        },
+        text: {
+          color: '#FFFFFF',
+        },
+      },
+    };
+
+    if (selectedDate && !markedDates[selectedDate]) {
+      markedDates[selectedDate] = {
+        selected: true,
+        selectedColor: '#036CFB',
+        selectedTextColor: '#FFFFFF',
+      };
+    }
+
+    return markedDates;
+  };
+
   return (
     <ScrollView style={styles.scrollWrapper} contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>BCSP Program</Text>
       </View>
 
-      <Image source={require('../../assets/images/BCSP_Logo-2.png')} style={styles.logo} />
-
       <View style={styles.calendarContainer}>
         <Calendar
           style={styles.calendar}
+          markedDates={getMarkedDates()}
+          onDayPress={handleDayPress}
+          markingType={'custom'}
           theme={{
             backgroundColor: '#5DD0FF',
             calendarBackground: '#5DD0FF',
             textSectionTitleColor: '#FF8E00',
-            selectedDayBackgroundColor: '#036CFB',
-            selectedDayTextColor: '#FFFFFF',
-            todayTextColor: '#FF8E00',
-            dayTextColor: '#000000',
             arrowColor: '#FF8E00',
             monthTextColor: '#FF8E00',
             textDayFontWeight: 'bold',
@@ -33,13 +91,15 @@ export default function HomeScreen() {
         />
       </View>
 
-      <View style={styles.cardContainer}>
-        {features.map((feature, index) => (
-          <View key={index} style={styles.card}>
-            <Text style={styles.cardTitle}>{feature.title}</Text>
-            <Text style={styles.cardText}>{feature.description}</Text>
+      <View style={styles.eventContainer}>
+        {selectedDate && events[selectedDate] ? (
+          <View style={styles.eventDetails}>
+            <Text style={styles.eventText}>Event for {selectedDate}:</Text>
+            <Text style={styles.eventDescription}>{events[selectedDate]}</Text>
           </View>
-        ))}
+        ) : (
+          <Text style={styles.placeholderText}>Nothing to do today.</Text>
+        )}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -53,13 +113,6 @@ export default function HomeScreen() {
     </ScrollView>
   );
 }
-
-const features = [
-  { title: 'Item 1', description: 'Text' },
-  { title: 'Item 2', description: 'Text' },
-  { title: 'Item 3', description: 'Text' },
-  { title: 'Item 4', description: 'Text' },
-];
 
 const styles = StyleSheet.create({
   scrollWrapper: {
@@ -81,12 +134,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 30,
   },
-  logo: {
-    width: 175,
-    height: 175,
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
   calendarContainer: {
     marginVertical: 20,
   },
@@ -94,28 +141,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
-  cardContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+  eventContainer: {
     marginVertical: 20,
   },
-  card: {
+  eventDetails: {
     backgroundColor: '#036CFB',
-    padding: 16,
-    margin: 8,
+    padding: 10,
     borderRadius: 10,
-    width: 160,
   },
-  cardTitle: {
+  eventText: {
     color: '#FF8E00',
     fontWeight: 'bold',
-    marginBottom: 4,
-    fontSize: 20,
   },
-  cardText: {
+  eventDescription: {
     color: '#FFFFFF',
-    fontSize: 15,
+  },
+  placeholderText: {
+    color: '#000000',
+    fontSize: 16,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
