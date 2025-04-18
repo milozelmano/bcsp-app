@@ -10,6 +10,9 @@ export default function HomeScreen() {
   const events: { [key: string]: string } = {
     '2025-04-10': 'Example Event 1',
     '2025-04-15': 'Example Event 2',
+    '2025-04-20': 'Example Event 3',
+    '2025-04-25': 'Example Event 4',
+    '2025-04-30': 'Example Event 5',
   };
 
   const handleDayPress = (day: any) => {
@@ -38,7 +41,6 @@ export default function HomeScreen() {
     }
 
     if (!markedDates[today]) markedDates[today] = {};
-
     markedDates[today] = {
       ...markedDates[today],
       customStyles: {
@@ -52,16 +54,22 @@ export default function HomeScreen() {
       },
     };
 
-    if (selectedDate && !markedDates[selectedDate]) {
-      markedDates[selectedDate] = {
-        selected: true,
-        selectedColor: '#036CFB',
-        selectedTextColor: '#FFFFFF',
-      };
-    }
-
     return markedDates;
   };
+
+  const getUpcomingEvents = () => {
+    const upcomingEvents = Object.keys(events)
+      .filter(date => date > today)
+      .sort()
+      .slice(0, 3);
+
+    return upcomingEvents.map(date => ({
+      date,
+      description: events[date],
+    }));
+  };
+
+  const upcomingEvents = getUpcomingEvents();
 
   return (
     <ScrollView style={styles.scrollWrapper} contentContainerStyle={styles.container}>
@@ -89,6 +97,20 @@ export default function HomeScreen() {
             textDayHeaderFontSize: 14,
           }}
         />
+      </View>
+
+      <View style={styles.upcomingEventsContainer}>
+        <Text style={styles.upcomingEventsTitle}>Upcoming Events</Text>
+        {upcomingEvents.length > 0 ? (
+          upcomingEvents.map((event, index) => (
+            <View key={index} style={styles.eventCard}>
+              <Text style={styles.eventDate}>{event.date}</Text>
+              <Text style={styles.eventDescriptionCard}>{event.description}</Text>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.noEventsText}>No upcoming events.</Text>
+        )}
       </View>
 
       <View style={styles.eventContainer}>
@@ -140,6 +162,42 @@ const styles = StyleSheet.create({
   calendar: {
     borderRadius: 10,
     padding: 10,
+  },
+  upcomingEventsContainer: {
+    marginVertical: 20,
+    padding: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  upcomingEventsTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#036CFB',
+    marginBottom: 10,
+  },
+  eventCard: {
+    marginBottom: 10,
+    backgroundColor: '#FF8E00',
+    padding: 10,
+    borderRadius: 8,
+  },
+  eventDate: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  eventDescriptionCard: {
+    fontSize: 14,
+    color: '#ffffff',
+  },
+  noEventsText: {
+    fontSize: 16,
+    color: '#888888',
+    textAlign: 'center',
   },
   eventContainer: {
     marginVertical: 20,
