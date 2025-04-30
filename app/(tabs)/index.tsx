@@ -3,10 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { Calendar } from 'react-native-calendars';
 
 export default function HomeScreen() {
+  // Stores the currently selected date
   const [selectedDate, setSelectedDate] = useState<string>('');
 
+  // Get today's date
   const today = new Date().toISOString().split('T')[0];
 
+  // list of events with their dates
   const events: { [key: string]: string } = {
     '2025-04-10': 'Example Event 1',
     '2025-04-15': 'Example Event 2',
@@ -15,13 +18,16 @@ export default function HomeScreen() {
     '2025-04-30': 'Example Event 5',
   };
 
+  // Updates selectedDate when a day is pressed on the calendar
   const handleDayPress = (day: any) => {
     setSelectedDate(day.dateString);
   };
 
+  // Marks events and selected/today dates on the calendar
   const getMarkedDates = () => {
     const markedDates: { [key: string]: any } = {};
 
+    // Add dots for event days
     Object.keys(events).forEach(date => {
       markedDates[date] = {
         marked: true,
@@ -32,6 +38,7 @@ export default function HomeScreen() {
       };
     });
 
+    // Highlight selected date 
     if (selectedDate && !events[selectedDate]) {
       markedDates[selectedDate] = {
         selected: true,
@@ -40,6 +47,7 @@ export default function HomeScreen() {
       };
     }
 
+    // Highlight today's date orange
     if (!markedDates[today]) markedDates[today] = {};
     markedDates[today] = {
       ...markedDates[today],
@@ -57,6 +65,7 @@ export default function HomeScreen() {
     return markedDates;
   };
 
+  // Gets the next 3 upcoming events
   const getUpcomingEvents = () => {
     const upcomingEvents = Object.keys(events)
       .filter(date => date > today)
@@ -71,12 +80,15 @@ export default function HomeScreen() {
 
   const upcomingEvents = getUpcomingEvents();
 
+  // Main layout
   return (
     <ScrollView style={styles.scrollWrapper} contentContainerStyle={styles.container}>
+      {/* App Title */}
       <View style={styles.header}>
         <Text style={styles.title}>BCSP Program</Text>
       </View>
 
+      {/* Calendar with marked dates */}
       <View style={styles.calendarContainer}>
         <Calendar
           style={styles.calendar}
@@ -99,6 +111,7 @@ export default function HomeScreen() {
         />
       </View>
 
+      {/* Upcoming Events List */}
       <View style={styles.upcomingEventsContainer}>
         <Text style={styles.upcomingEventsTitle}>Upcoming Events</Text>
         {upcomingEvents.length > 0 ? (
@@ -113,6 +126,7 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {/* Event Details for Selected Date */}
       <View style={styles.eventContainer}>
         {selectedDate && events[selectedDate] ? (
           <View style={styles.eventDetails}>
@@ -124,6 +138,7 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {/* Buttons at the bottom */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.buttonPrimary}>
           <Text style={styles.buttonText}>Get Started</Text>
@@ -136,6 +151,7 @@ export default function HomeScreen() {
   );
 }
 
+// App styling
 const styles = StyleSheet.create({
   scrollWrapper: {
     flex: 1,
